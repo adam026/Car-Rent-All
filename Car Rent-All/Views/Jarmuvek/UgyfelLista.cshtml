@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Car_Rent_All.Models.Jarmu>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Bérelhető Járművek</h2>
+
+<table id="jarmuvek" class="table table-dark table-hover">
+    <thead>
+        <tr>
+            <th>Név</th>
+            <th>Rendszám</th>
+            <th>Alvázszám</th>
+            <th>Váltó</th>
+            <th>Üzemanyag</th>
+            <th>Ülések</th>
+            <th>Ajtók</th>
+            <th>Gyártás éve</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#jarmuvek").DataTable({
+                ajax:
+                {
+                    url: "/Api/Jarmuvek",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "nev" 
+                    },
+                    {
+                        data: "rendszam"
+                    },
+                    {
+                        data: "alvazszam"
+                    },
+                    {
+                        data: "valto.nev"
+                    },
+                    {
+                        data: "uzemanyag.nev"
+                    },
+                    {
+                        data: "ules"
+                    },
+                    {
+                        data: "ajtok"
+                    },
+                    {
+                        data: "gyartasEve"
+                    },
+                ]
+            });
+        });
+    </script>
+}
+

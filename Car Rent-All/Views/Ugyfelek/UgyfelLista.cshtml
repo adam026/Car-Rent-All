@@ -1,0 +1,82 @@
+﻿@model List<Car_Rent_All.Models.Ugyfel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Saját adatok szerkesztése</h2>
+
+<table id ="ugyfelek" class="table table-dark table-hover">
+    <thead>
+        <tr>
+            <th>Név</th>
+            <th>Cím</th>
+            <th>Születési dátum</th>
+            <th>Jogosítvány</th>
+            <th>Telefonszám</th>
+            <th>E-mail</th>
+            <th>Törlés</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#ugyfelek").DataTable({
+                ajax:
+                {
+                    url: "/Api/Ugyfelek",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "nev",
+                        render: function (data, type, ugyfel) {
+                            return "<a href='/Jarmuvek/Edit/" + ugyfel.id + "'>" + ugyfel.nev
+                        }
+                    },
+                    {
+                        data: "cim"
+                    },
+                    {
+                        data: "szuletesiDatum"
+                    },
+                    {
+                        data: "jogositvany"
+                    },
+                    {
+                        data: "telefonszam"
+                    },
+                    {
+                        data: "email"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-ugyfel-id=" + data + ">Törlés</button>";
+                        }
+                    },
+                ]
+            });
+
+            $("#ugyfelek").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Valóban törölni szeretnéd a kiválasztott ügyfelet?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/Api/Ugyfelek/" + button.attr("data-ugyfel-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>   
+}
+

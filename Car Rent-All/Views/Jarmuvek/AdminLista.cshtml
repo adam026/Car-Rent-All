@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Car_Rent_All.Models.Jarmu>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Járművek</h2>
+
+<button type="submit" class="btn btn-primary" onclick="location.href='@Url.Action("New", "Jarmuvek")'">Új jármű hozzáadása</button>
+<table id="jarmuvek" class="table table-dark table-hover">
+    <thead>
+        <tr>
+            <th>Név</th>
+            <th>Rendszám</th>
+            <th>Alvázszám</th>
+            <th>Váltó</th>
+            <th>Üzemanyag</th>
+            <th>Ülések</th>
+            <th>Ajtók</th>
+            <th>Gyártás éve</th>
+            <th>Törlés</th>
+        </tr>
+    </thead>
+    @*<tbody>
+        @foreach (var jarmu in Model)
+        {
+            <tr>
+                <td><img src="~/Content/IMG/@jarmu.Kep" height="50" /> </td>
+                <td>@Html.ActionLink(jarmu.Nev, "Edit", "Jarmuvek", new { id = jarmu.Id }, null)</td>
+                <td>@jarmu.Rendszam</td>
+                <td>@jarmu.Alvazszam</td>
+                <td>@jarmu.Valto.Nev</td>
+                <td>@jarmu.Uzemanyag.Nev</td>
+                <td>@jarmu.Ules</td>
+                <td>@jarmu.Ajtok</td>
+                <td>@jarmu.GyartasEve</td>
+                <td>
+                    <button data-jarmu-id="@jarmu.Id" , class="btn-link js-delete">Törlés</button>
+                </td>
+            </tr>
+        }
+    </tbody>*@
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            var table = $("#jarmuvek").DataTable({
+                ajax:
+                {
+                    url: "/Api/Jarmuvek",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "nev",
+                        render: function (data, type, jarmu) {
+                            return "<a href='/Jarmuvek/Edit/" + jarmu.id + "'>" + jarmu.nev
+                        }
+                    },
+                    {
+                        data: "rendszam"
+                    },
+                    {
+                        data: "alvazszam"
+                    },
+                    {
+                        data: "valto.nev"
+                    },
+                    {
+                        data: "uzemanyag.nev"
+                    },
+                    {
+                        data: "ules"
+                    },
+                    {
+                        data: "ajtok"
+                    },
+                    {
+                        data: "gyartasEve"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-jarmu-id=" + data + ">Törlés</button>";
+                        }
+                    },
+                ]
+            });
+
+            $("#jarmuvek").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Valóban törölni szeretnéd a kiválasztott járművet?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/Api/Jarmuvek/" + button.attr("data-jarmu-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}
+

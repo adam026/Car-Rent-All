@@ -1,0 +1,70 @@
+﻿@model Car_Rent_All.ViewModels.JarmuValtoUzemanyag
+@{
+    ViewBag.Title = "JarmuForm";
+}
+
+@{
+    var cimsor = Model.Jarmu.Id == 0 ? "Új jármű hozzáadása" : "Szerkesztés";
+}
+<h2>@cimsor</h2>
+
+@using (Html.BeginForm("Save", "Jarmuvek"))
+{
+    <div class="form-group">
+        @Html.LabelFor(j => j.Jarmu.Nev)
+        @Html.TextBoxFor(j => j.Jarmu.Nev, new { @class = "form-control" })
+        @Html.ValidationMessageFor(j => j.Jarmu.Nev)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Jarmu.Rendszam)
+        @Html.TextBoxFor(j => j.Jarmu.Rendszam, new { @class = "form-control" })
+        @Html.ValidationMessageFor(j => j.Jarmu.Rendszam)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Jarmu.Alvazszam)
+        @Html.TextBoxFor(j => j.Jarmu.Alvazszam, new { @class = "form-control" })
+        @Html.ValidationMessageFor(j => j.Jarmu.Alvazszam)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Jarmu.valtoId)
+        @Html.DropDownListFor(j => j.Jarmu.valtoId, new SelectList(Model.Valto, "Id", "Nev"), "Válaszd ki a váltó típusát", new { @class = "form-control" })
+        @Html.ValidationMessageFor(j => j.Jarmu.valtoId)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Jarmu.UzemanyagId)
+        @Html.DropDownListFor(j => j.Jarmu.UzemanyagId, new SelectList(Model.Uzemanyag, "Id", "Nev"), "Válaszd ki az üzemanyag típusát", new { @class = "form-control" })
+        @Html.ValidationMessageFor(j => j.Jarmu.UzemanyagId)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Jarmu.Ules)
+        @Html.TextBoxFor(j => j.Jarmu.Ules, new { @class = "form-control", @Value = "" })
+        @Html.ValidationMessageFor(j => j.Jarmu.Ules)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Jarmu.Ajtok)
+        @Html.TextBoxFor(j => j.Jarmu.Ajtok, new { @class = "form-control", @Value = "" })
+        @Html.ValidationMessageFor(j => j.Jarmu.Ajtok)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Jarmu.GyartasEve)
+        @Html.TextBoxFor(j => j.Jarmu.GyartasEve, new { @class = "form-control", @Value = "" })
+        @Html.ValidationMessageFor(j => j.Jarmu.GyartasEve)
+    </div>
+
+    @Html.HiddenFor(j => j.Jarmu.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Mentés</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
