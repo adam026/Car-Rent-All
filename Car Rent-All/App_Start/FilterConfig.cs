@@ -9,6 +9,7 @@ namespace Car_Rent_All
         {
             //Saját hozzáadottak
             filters.Add(new AuthorizeAttribute());
+            filters.Add(new RequireHttpsAttribute());
 
             filters.Add(new HandleErrorAttribute());
         }

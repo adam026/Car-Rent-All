@@ -1,82 +1,64 @@
-﻿@model List<Car_Rent_All.Models.Ugyfel>
+﻿@model Car_Rent_All.Models.Ugyfel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Saját adataim szerkesztése";
 }
 
 <h2>Saját adatok szerkesztése</h2>
 
-<table id ="ugyfelek" class="table table-dark table-hover">
-    <thead>
-        <tr>
-            <th>Név</th>
-            <th>Cím</th>
-            <th>Születési dátum</th>
-            <th>Jogosítvány</th>
-            <th>Telefonszám</th>
-            <th>E-mail</th>
-            <th>Törlés</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+@using (Html.BeginForm("Save", "Ugyfelek"))
+{
+    string dateValue = Model.SzuletesiDatum is null
+        ? null
+        : ((DateTime)Model.SzuletesiDatum).ToString("yyyy-MM-dd");
+
+    <div class="form-group">
+        @Html.LabelFor(u => u.Nev)
+        @Html.TextBoxFor(u => u.Nev, new { @class = "form-control" })
+        @Html.ValidationMessageFor(u => u.Nev)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(u => u.Cim)
+        @Html.TextBoxFor(u => u.Cim, new { @class = "form-control" })
+        @Html.ValidationMessageFor(u => u.Cim)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(u => u.SzuletesiDatum)
+        @Html.TextBoxFor(u => u.SzuletesiDatum, new { @class = "form-control", type = "date", @Value = dateValue })
+        @Html.ValidationMessageFor(u => u.SzuletesiDatum)
+
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(u => u.Jogositvany)
+        @Html.TextBoxFor(u => u.Jogositvany, new { @class = "form-control" })
+        @Html.ValidationMessageFor(u => u.Jogositvany)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(u => u.Telefonszam)
+        @Html.TextBoxFor(u => u.Telefonszam, new { @class = "form-control" })
+        @Html.ValidationMessageFor(u => u.Telefonszam)
+    </div>
+
+    var disabled = User.IsInRole("CanManage") ? null : "disabled";
+
+    <div class="form-group">
+        @Html.LabelFor(u => u.Email)
+        @Html.TextBoxFor(u => u.Email, new { @class = "form-control", @readonly = true })
+        @Html.ValidationMessageFor(u => u.Email)
+    </div>
+
+    @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Mentés</button>
+
+}
 
 @section scripts
 {
-    <script>
-        $(document).ready(function () {
-            var table = $("#ugyfelek").DataTable({
-                ajax:
-                {
-                    url: "/Api/Ugyfelek",
-                    dataSrc: ""
-                },
-                columns: [
-                    {
-                        data: "nev",
-                        render: function (data, type, ugyfel) {
-                            return "<a href='/Jarmuvek/Edit/" + ugyfel.id + "'>" + ugyfel.nev
-                        }
-                    },
-                    {
-                        data: "cim"
-                    },
-                    {
-                        data: "szuletesiDatum"
-                    },
-                    {
-                        data: "jogositvany"
-                    },
-                    {
-                        data: "telefonszam"
-                    },
-                    {
-                        data: "email"
-                    },
-                    {
-                        data: "id",
-                        render: function (data) {
-                            return "<button class='btn-link js-delete' data-ugyfel-id=" + data + ">Törlés</button>";
-                        }
-                    },
-                ]
-            });
-
-            $("#ugyfelek").on("click", ".js-delete", function () {
-                var button = $(this);
-                bootbox.confirm("Valóban törölni szeretnéd a kiválasztott ügyfelet?", function (result) {
-                    if (result) {
-                        $.ajax({
-                            url: "/Api/Ugyfelek/" + button.attr("data-ugyfel-id"),
-                            method: "DELETE",
-                            success: function () {
-                                table.row(button.parents("tr")).remove().draw();
-                            }
-                        });
-                    }
-                });
-            });
-        });
-    </script>   
+    @Scripts.Render("~/bundles/jqueryval")
 }
+
 

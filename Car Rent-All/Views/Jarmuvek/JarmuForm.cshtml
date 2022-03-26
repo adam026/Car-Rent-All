@@ -58,6 +58,12 @@
         @Html.ValidationMessageFor(j => j.Jarmu.GyartasEve)
     </div>
 
+    <div class="form-group">
+        @Html.LabelFor(j => j.Jarmu.Elerheto)
+        @Html.TextBoxFor(j => j.Jarmu.Elerheto, new { @class = "form-control", @Value = "" })
+        @Html.ValidationMessageFor(j => j.Jarmu.Elerheto)
+    </div>
+
     @Html.HiddenFor(j => j.Jarmu.Id)
     @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-primary">Mentés</button>

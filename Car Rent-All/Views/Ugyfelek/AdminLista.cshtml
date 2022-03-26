@@ -20,30 +20,6 @@
         </tr>
     </thead>
     <tbody>
-        @*@if (Model.Count == 0)
-        {
-            <tr>
-                <td>Még nincs egyetlen ügyfél sem az adatbázisban!</td>
-            </tr>
-        }
-        else
-        {
-            foreach (var ugyfel in Model)
-            {
-                <tr>
-                    <td>@Html.ActionLink(ugyfel.Nev, "Edit", "Ugyfelek", new { id = ugyfel.Id}, null)</td>
-                    <td>@ugyfel.Cim</td>
-                    <td>@ugyfel.SzuletesiDatum.Value.ToString("yyyy-MM-dd")</td>
-                    <td>@ugyfel.Jogositvany</td>
-                    <td>@ugyfel.Telefonszam</td>
-                    <td>@ugyfel.Email</td>
-                    <td>
-                        <button data-ugyfel-id="@ugyfel.Id", class="btn-link js-delete">Törlés</button>
-                    </td>
-                </tr>
-            }
-        }*@
-
     </tbody>
 </table>
 
@@ -61,7 +37,7 @@
                     {
                         data: "nev",
                         render: function (data, type, ugyfel) {
-                            return "<a href='/Jarmuvek/Edit/" + ugyfel.id + "'>" + ugyfel.nev
+                            return "<a href='/Ugyfelek/Edit/" + ugyfel.id + "'>" + ugyfel.nev
                         }
                     },
                     {

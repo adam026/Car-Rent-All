@@ -1,4 +1,5 @@
-﻿using Car_Rent_All.Models;
+﻿using AutoMapper;
+using Car_Rent_All.Models;
 using Car_Rent_All.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -73,17 +74,7 @@ namespace Car_Rent_All.Controllers
             else
             {
                 var jarmuInDb = _context.Jarmuvek.Single(j => j.Id == jarmu.Id);
-
-                jarmuInDb.Nev = jarmu.Nev;
-                jarmuInDb.Rendszam = jarmu.Rendszam;
-                jarmuInDb.Alvazszam = jarmu.Alvazszam;
-                jarmuInDb.valtoId = jarmu.valtoId;
-                jarmuInDb.UzemanyagId = jarmu.UzemanyagId;
-                jarmuInDb.Ules = jarmu.Ules;
-                jarmuInDb.Ajtok = jarmu.Ajtok;
-                jarmuInDb.GyartasEve = jarmu.GyartasEve;
-
-
+                Mapper.Map(jarmu, jarmuInDb);
             }
             _context.SaveChanges();
             return RedirectToAction("Index", "Jarmuvek");

@@ -17,28 +17,11 @@
             <th>Ülések</th>
             <th>Ajtók</th>
             <th>Gyártás éve</th>
+            <th>Készleten</th>
             <th>Törlés</th>
         </tr>
     </thead>
-    @*<tbody>
-        @foreach (var jarmu in Model)
-        {
-            <tr>
-                <td><img src="~/Content/IMG/@jarmu.Kep" height="50" /> </td>
-                <td>@Html.ActionLink(jarmu.Nev, "Edit", "Jarmuvek", new { id = jarmu.Id }, null)</td>
-                <td>@jarmu.Rendszam</td>
-                <td>@jarmu.Alvazszam</td>
-                <td>@jarmu.Valto.Nev</td>
-                <td>@jarmu.Uzemanyag.Nev</td>
-                <td>@jarmu.Ules</td>
-                <td>@jarmu.Ajtok</td>
-                <td>@jarmu.GyartasEve</td>
-                <td>
-                    <button data-jarmu-id="@jarmu.Id" , class="btn-link js-delete">Törlés</button>
-                </td>
-            </tr>
-        }
-    </tbody>*@
+    <tbody></tbody>
 </table>
 
 @section scripts
@@ -78,6 +61,9 @@
                     },
                     {
                         data: "gyartasEve"
+                    },
+                    {
+                        data: "elerheto"
                     },
                     {
                         data: "id",

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Car_Rent_All.Controllers
@@ -28,14 +27,11 @@ namespace Car_Rent_All.Controllers
                 return View("AdminLista");
             else
             {
-                var ugyfel = _context.Ugyfelek.SingleOrDefault(x => x.Email == User.Identity.Name);
-                if (ugyfel is null)
-                {
-                    var atadott = new Ugyfel { Id = 0, Email = User.Identity.Name };
-                    return View("UgyfelForm", atadott);
-                }
+                var meghivoUgyfel = _context.Ugyfelek.SingleOrDefault(u => u.Email == User.Identity.Name);
+                if (meghivoUgyfel is null)
+                    return RedirectToAction("New", "Ugyfelek");
                 else
-                    return View("UgyfelForm", ugyfel);
+                    return View("UgyfelLista", meghivoUgyfel);
             }
 
         }
@@ -48,7 +44,10 @@ namespace Car_Rent_All.Controllers
             {
                 var visszaadottUgyfel = ugyfel;
 
-                return View("UgyfelForm", ugyfel);
+                if (User.IsInRole("CanManage"))
+                    return View("UgyfelForm", ugyfel);
+                else
+                    return View("UgyfelLista", ugyfel);
             }
 
 
@@ -59,6 +58,7 @@ namespace Car_Rent_All.Controllers
             else
             {
                 var ugyfelInDb = _context.Ugyfelek.Single(u => u.Id == ugyfel.Id);
+                var regiUser = _context.Users.Single(u => u.Email == User.Identity.Name);
 
                 ugyfelInDb.Nev = ugyfel.Nev;
                 ugyfelInDb.Cim = ugyfel.Cim;
@@ -66,9 +66,14 @@ namespace Car_Rent_All.Controllers
                 ugyfelInDb.Jogositvany = ugyfel.Jogositvany;
                 ugyfelInDb.Telefonszam = ugyfel.Telefonszam;
                 ugyfelInDb.Email = ugyfel.Email;
+                regiUser.Email = ugyfel.Email;
             }
             _context.SaveChanges();
-            return RedirectToAction("Index", "Ugyfelek");
+
+            if (User.IsInRole("CanManage"))
+                return RedirectToAction("Index", "Ugyfelek");
+            else
+                return View("UgyfelLista", ugyfel);
         }
 
         [Authorize(Roles = RoleName.CanManage)]
@@ -84,7 +89,7 @@ namespace Car_Rent_All.Controllers
             }
         }
 
-        [Authorize(Roles = RoleName.CanManage)]
+        [Authorize]
         public ActionResult New()
         {
             var ugyfel = new Ugyfel { Id = 0 };

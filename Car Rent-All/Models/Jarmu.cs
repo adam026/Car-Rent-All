@@ -44,9 +44,16 @@ namespace Car_Rent_All.Models
         public int Ajtok { get; set; }
 
         [Display(Name = "A gyártás éve: ")]
-        [Required(ErrorMessage = "A gyártás évének megadása kötelező")]
+        [Required(ErrorMessage = "A gyártás évének megadása kötelező!")]
         public int GyartasEve { get; set; }
 
         public string Kep { get; set; }
+
+        [Range(1,20)]
+        public int Keszlet { get; set; }
+
+        [Display(Name = "Elérhető: ")]
+        [Required(ErrorMessage = "Az elérhető darabszám megadása kötelező!")]
+        public int Elerheto { get; set; }
     }
 }
