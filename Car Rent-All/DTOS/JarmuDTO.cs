@@ -22,5 +22,6 @@ namespace Car_Rent_All.DTOS
         public int Ajtok { get; set; }
         public int GyartasEve { get; set; }
         public int Elerheto { get; set; }
+        public int Ar { get; set; }
     }
 }

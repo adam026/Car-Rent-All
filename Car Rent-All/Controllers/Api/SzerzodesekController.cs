@@ -18,40 +18,34 @@ namespace Car_Rent_All.Controllers.Api
             _context = new ApplicationDbContext();
         }
 
-        [HttpPost]
-        public IHttpActionResult CreateNewSzerzodes(SzerzodesDTO szerzodesDTO) 
-        {
-            if (szerzodesDTO.JarmuIds.Count == 0)
-                return BadRequest("Nem került jármű kiválasztásra!");
+        //[HttpPost]
+        //public IHttpActionResult CreateNewSzerzodes(SzerzodesDTO szerzodesDTO) 
+        //{
+        //    var ugyfel = _context.Ugyfelek.Single(u => u.Id == szerzodesDTO.UgyfelId);
 
-            var ugyfel = _context.Ugyfelek.Single(u => u.Id == szerzodesDTO.UgyfelId);
+        //    if (ugyfel == null)
+        //        return BadRequest("Az ügyfél nem található az adatbázisban!");
 
-            if (ugyfel == null)
-                return BadRequest("Az ügyfél nem található az adatbázisban!");
+        //    var jarmu = _context.Jarmuvek.Single(j => j.Id == szerzodesDTO.JarmuId)
 
-            var jarmuvek = _context.Jarmuvek.Where(j => szerzodesDTO.JarmuIds.Contains(j.Id)).ToList();
+        //    foreach (var jarmu in jarmuvek)
+        //    {
+        //        if (jarmu.Elerheto == 0)
+        //            return BadRequest("A jármű nem elérhető!");
+        //        jarmu.Elerheto--;
 
-            if (jarmuvek.Count != szerzodesDTO.JarmuIds.Count)
-                return BadRequest("Egy vagy több JarmuId helytelen!");
+        //        var szerzodes = new Szerzodes
+        //        {
+        //            Ugyfel = ugyfel,
+        //            Jarmu = jarmu,
+        //            BerlesKezdoIdopont = DateTime.Now
+        //        };
 
-            foreach (var jarmu in jarmuvek)
-            {
-                if (jarmu.Elerheto == 0)
-                    return BadRequest("A jármű nem elérhető!");
-                jarmu.Elerheto--;
+        //        _context.Szerzodesek.Add(szerzodes);
+        //    };
 
-                var szerzodes = new Szerzodes
-                {
-                    Ugyfel = ugyfel,
-                    Jarmu = jarmu,
-                    BerlesKezdoIdopont = DateTime.Now
-                };
-
-                _context.Szerzodesek.Add(szerzodes);
-            };
-
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
     }
 }

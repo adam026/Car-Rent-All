@@ -42,7 +42,6 @@
         @Html.ValidationMessageFor(u => u.Telefonszam)
     </div>
 
-    var disabled = User.IsInRole("CanManage") ? null : "disabled";
 
     <div class="form-group">
         @Html.LabelFor(u => u.Email)

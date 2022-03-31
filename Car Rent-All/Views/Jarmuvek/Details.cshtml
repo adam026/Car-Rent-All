@@ -1,0 +1,58 @@
+﻿@model Car_Rent_All.Models.Jarmu
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>@Model.Nev részletes adatai</h2>
+
+@using (Html.BeginForm("New", "Szerzodesek"))
+{
+    <div class="form-group">
+        <img src="~/Content/IMG/@Model.Kep"/>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Nev)
+        @Html.TextBoxFor(j => j.Nev, new { @class = "form-control", @readonly = true})
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Rendszam)
+        @Html.TextBoxFor(j => j.Rendszam, new { @class = "form-control", @readonly = true })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Alvazszam)
+        @Html.TextBoxFor(j => j.Alvazszam, new { @class = "form-control", @readonly = true })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Valto.Nev)
+        @Html.TextBoxFor(j => j.Valto.Nev, new { @class = "form-control", @readonly = true })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Uzemanyag.Nev)
+        @Html.TextBoxFor(j => j.Uzemanyag.Nev, new { @class = "form-control", @readonly = true })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Ajtok)
+        @Html.TextBoxFor(j => j.Ajtok, new { @class = "form-control", @readonly = true })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.GyartasEve)
+        @Html.TextBoxFor(j => j.GyartasEve, new { @class = "form-control", @readonly = true })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(j => j.Elerheto)
+        @Html.TextBoxFor(j => j.Elerheto, new { @class = "form-control", @readonly = true })
+    </div>
+
+    @Html.HiddenFor(j => j.Id)
+
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">Árajánlatot kérek!</button>
+}

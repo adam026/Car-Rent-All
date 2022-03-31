@@ -27,10 +27,16 @@ namespace Car_Rent_All.Controllers
         // GET: Jarmuvek
         public ActionResult Index()
         {
+            var jarmuvek = _context.Jarmuvek
+                .Include(v => v.Valto)
+                .Include(u => u.Uzemanyag)
+                .ToList();
+
             if (User.IsInRole("CanManage"))
                 return View("AdminLista");
             else
-                return View("UgyfelLista");
+                
+                return View("BerelhetoJarmuvek", jarmuvek);
         }
 
         [Authorize(Roles = RoleName.CanManage)]
@@ -109,6 +115,23 @@ namespace Car_Rent_All.Controllers
                 Uzemanyag = _context.Uzemanyagok.ToList()
             };
             return View("JarmuForm", viewModel);
+        }
+
+        public ActionResult Details(int id)
+        {
+            var jarmu = _context.Jarmuvek
+                .Include(v => v.Valto)
+                .Include(u => u.Uzemanyag)
+                .Single(j => j.Id == id);
+
+            //var viewModel = new JarmuValtoUzemanyag
+            //{
+            //    Jarmu = jarmu,
+            //    Valto = _context.Valtok.ToList(),
+            //    Uzemanyag = _context.Uzemanyagok.ToList()
+            //};
+
+            return View("Details", jarmu);
         }
     }
 }

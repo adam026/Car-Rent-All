@@ -55,5 +55,9 @@ namespace Car_Rent_All.Models
         [Display(Name = "Elérhető: ")]
         [Required(ErrorMessage = "Az elérhető darabszám megadása kötelező!")]
         public int Elerheto { get; set; }
+
+        [Display(Name = "Bérlés ára/nap: ")]
+        [Required(ErrorMessage = "A napi ár megadása kötelező!")]
+        public int Ar { get; set; }
     }
 }
