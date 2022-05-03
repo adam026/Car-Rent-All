@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Car_Rent_All.DTOS;
 using Car_Rent_All.Models;
 using Car_Rent_All.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -57,18 +59,18 @@ namespace Car_Rent_All.Controllers
         [Authorize(Roles = RoleName.CanManage)]
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Save(Jarmu jarmu)
+        public ActionResult Mentes(Jarmu jarmu)
         {
+            jarmu.Elerheto = jarmu.Keszlet;
             if (!ModelState.IsValid)
             {
-                var visszaadottJarmu = jarmu;
                 var viewModel = new JarmuValtoUzemanyag
                 {
                     Jarmu = jarmu,
                     Valto = _context.Valtok.ToList(),
                     Uzemanyag = _context.Uzemanyagok.ToList()
                 };
-                
+
                 return View("JarmuForm", viewModel);
             }
 
@@ -80,16 +82,33 @@ namespace Car_Rent_All.Controllers
             else
             {
                 var jarmuInDb = _context.Jarmuvek.Single(j => j.Id == jarmu.Id);
-                Mapper.Map(jarmu, jarmuInDb);
+
+                jarmuInDb.Nev = jarmu.Nev;
+                jarmuInDb.Rendszam = jarmu.Rendszam;
+                jarmuInDb.Alvazszam = jarmu.Alvazszam;
+                jarmuInDb.valtoId = jarmu.valtoId;
+                jarmuInDb.UzemanyagId = jarmu.UzemanyagId;
+                jarmuInDb.Ajtok = jarmu.Ajtok;
+                jarmuInDb.Ar = jarmu.Ar;
+                jarmuInDb.GyartasEve = jarmu.GyartasEve;
+                jarmuInDb.Keszlet = jarmu.Keszlet;
+                jarmuInDb.Elerheto = jarmu.Elerheto;
+                jarmuInDb.Kep = jarmu.Kep;
             }
+
             _context.SaveChanges();
+
             return RedirectToAction("Index", "Jarmuvek");
         }
 
         [Authorize(Roles = RoleName.CanManage)]
-        public ActionResult Edit(int id)
+        public ActionResult Szerkesztes(int id)
         {
-            var jarmu = _context.Jarmuvek.SingleOrDefault(u => u.Id == id);
+            var jarmu = _context.Jarmuvek
+                .Include(v => v.Valto)
+                .Include(u => u.Uzemanyag)
+                .SingleOrDefault(j => j.Id == id);
+
             if (jarmu is null)
                 return HttpNotFound();
 
@@ -105,7 +124,7 @@ namespace Car_Rent_All.Controllers
         }
 
         [Authorize(Roles = RoleName.CanManage)]
-        public ActionResult New()
+        public ActionResult UjJarmu()
         {
             var jarmu = new Jarmu { Id = 0 };
             var viewModel = new JarmuValtoUzemanyag
@@ -117,21 +136,14 @@ namespace Car_Rent_All.Controllers
             return View("JarmuForm", viewModel);
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Reszletek(int id)
         {
             var jarmu = _context.Jarmuvek
                 .Include(v => v.Valto)
                 .Include(u => u.Uzemanyag)
                 .Single(j => j.Id == id);
 
-            //var viewModel = new JarmuValtoUzemanyag
-            //{
-            //    Jarmu = jarmu,
-            //    Valto = _context.Valtok.ToList(),
-            //    Uzemanyag = _context.Uzemanyagok.ToList()
-            //};
-
-            return View("Details", jarmu);
+            return View("Reszletek", jarmu);
         }
     }
 }

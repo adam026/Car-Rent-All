@@ -1,43 +1,45 @@
-﻿@model List<Car_Rent_All.Models.Szerzodes>
-@{
-    ViewBag.Title = "Index";
-}
+﻿<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+@model List<Car_Rent_All.Models.Szerzodes>
 
 <h3>Jóváhagyásra vár: </h3>
 
 @{
     var counter = 0;
-    foreach (var szerzodes in Model)
-    {
-        if (szerzodes.Jovahagy == 0)
-        {
-            <table class="table table-dark table-hover">
-                <thead>
-                    <tr>
-                        <th>Jármű</th>
-                        <th>Bérlés kezdő időpontja</th>
-                        <th>Bérlés záró időpontja</th>
-                        <th>Státusz</th>
-                    </tr>
-                </thead>
-                <tbody>
+
+    <table id="szerzodesek" class="table table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th>Jármű</th>
+                <th>Bérlés kezdő időpontja</th>
+                <th>Bérlés záró időpontja</th>
+                <th>Státusz</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var szerzodes in Model)
+            {
+                if (szerzodes.Jovahagy == 0)
+                {
                     <tr>
                         <td>@szerzodes.Jarmu.Nev</td>
                         <td>@szerzodes.BerlesKezdoIdopont.ToString("yyyy-MM-dd")</td>
                         <td>@szerzodes.BerlesZaroIdopont.ToString("yyyy-MM-dd")</td>
-                        <td>Jóváhagyás alatt</td>
+                        <td>Jóváhagyásra vár</td>
+                        <td><button class='btn btn-danger js-delete' data-szerzodes-id="@szerzodes.Id"><i class="bi-trash"></i></button></td>
                     </tr>
-                </tbody>
-            </table>
-            counter++;
-        }
-    }
+                }
+                counter++;
+            }
 
+        </tbody>
+
+    </table>
     if (counter == 0)
     {
         <p>Nincsenek jóváhagyásra váró szerződések!</p>
     }
-
 
 }
 
@@ -45,70 +47,95 @@
 
 @{
     var counter1 = 0;
-    foreach (var szerzodes in Model)
-    {
-        if (szerzodes.Jovahagy == 1 && szerzodes.BerlesZaroIdopont > DateTime.Now)
-        {
 
-            <table class="table table-dark table-hover">
-                <thead>
-                    <tr>
-                        <th>Jármű</th>
-                        <th>Bérlés kezdő időpontja</th>
-                        <th>Bérlés záró időpontja</th>
-                        <th>Státusz</th>
-                    </tr>
-                </thead>
-                <tbody>
+    <table class="table table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th>Jármű</th>
+                <th>Bérlés kezdő időpontja</th>
+                <th>Bérlés záró időpontja</th>
+                <th>Státusz</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var szerzodes in Model)
+            {
+                if (szerzodes.Jovahagy == 1 && szerzodes.BerlesZaroIdopont > DateTime.Now)
+                {
                     <tr>
                         <td>@szerzodes.Jarmu.Nev</td>
                         <td>@szerzodes.BerlesKezdoIdopont.ToString("yyyy-MM-dd")</td>
                         <td>@szerzodes.BerlesZaroIdopont.ToString("yyyy-MM-dd")</td>
                         <td>Jóváhagyva, folyamatban</td>
                     </tr>
-                </tbody>
-            </table>
-            counter1++;
-        }
-    }
-    if (counter1 == 0)
-    {
-        <p>Nincsenek aktuális szerződések!</p>
-    }
+                }
+                counter1++;
+            }
+
+        </tbody>
+
+    </table>
+
 }
 
 <h3>Korábbi bérléseim</h3>
 
 @{
+
     var counter2 = 0;
-    foreach (var szerzodes in Model)
-    {
-        if (szerzodes.Jovahagy == 1 && szerzodes.BerlesZaroIdopont < DateTime.Now)
-        {
-            <table class="table table-dark table-hover">
-                <thead>
-                    <tr>
-                        <th>Jármű</th>
-                        <th>Bérlés kezdő időpontja</th>
-                        <th>Bérlés záró időpontja</th>
-                        <th>Státusz</th>
-                    </tr>
-                </thead>
-                <tbody>
+
+    <table class="table table-hover">
+        <thead class="table-primary">
+            <tr>
+                <th>Jármű</th>
+                <th>Bérlés kezdő időpontja</th>
+                <th>Bérlés záró időpontja</th>
+                <th>Státusz</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var szerzodes in Model)
+            {
+                if (szerzodes.Jovahagy == 1 && szerzodes.BerlesZaroIdopont < DateTime.Now)
+                {
                     <tr>
                         <td>@szerzodes.Jarmu.Nev</td>
                         <td>@szerzodes.BerlesKezdoIdopont.ToString("yyyy-MM-dd")</td>
                         <td>@szerzodes.BerlesZaroIdopont.ToString("yyyy-MM-dd")</td>
                         <td>Lejárt</td>
                     </tr>
-                </tbody>
-            </table>
-            counter2++;
-        }
-    }
+                }
+                counter2++;
+            }
+
+        </tbody>
+
+    </table>
+
     if (counter2 == 0)
     {
         <p>Nincsenek lejárt szerződések!</p>
     }
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#szerzodesek").on("click", ".js-delete", function () {
+                var btn = $(this);
+                if (confirm("Valóban vissza szeretnéd vonni az árajánlat igényt?")) {
+                    $.ajax({
+                        url: "/api/szerzodesek/" + btn.attr("data-szerzodes-id"),
+                        method: "DELETE",
+                        success: function () {
+                            btn.parents("tr").remove();
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
 }
 

@@ -1,7 +1,4 @@
 ﻿@model IEnumerable<Car_Rent_All.Models.Jarmu>
-@{
-    ViewBag.Title = "Index";
-}
 
 <h2>Bérelhető Járművek</h2>
 
@@ -9,7 +6,7 @@
     @foreach (var jarmu in Model)
     {
         <div class="col">
-            <div class="card">
+            <div class="card card h-100">
                 <h3 class="card-header">@jarmu.Nev</h3>
                 <div class="card-body">
                     <h5 class="card-title">Váltó: @jarmu.Valto.Nev</h5>
@@ -17,7 +14,6 @@
                 </div>
                 <img src="~/Content/IMG/@jarmu.Kep" />
                 <div class="card-body">
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Férőhelyek száma: @jarmu.Ules</li>
@@ -25,11 +21,8 @@
                     <li class="list-group-item">Gyártás éve: @jarmu.GyartasEve</li>
                 </ul>
                 <div class="card-body">
-                    <a href="\Jarmuvek\Details\@jarmu.Id" class="card-link">Részletes adatok</a>
-                    <a href="#" class="card-link">Another link</a>
-                </div>
-                <div class="card-footer text-muted">
-                    2 days ago
+                    <a href="\Jarmuvek\Reszletek\@jarmu.Id" class="card-link">Részletes adatok</a>
+                    <a href="\Szerzodesek\UjSzerzodes\@jarmu.Id" class="card-link">Árajánlatot kérek</a>
                 </div>
             </div>
         </div>

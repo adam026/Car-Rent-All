@@ -55,13 +55,13 @@ namespace Car_Rent_All
             //   consumerSecret: "");
 
             app.UseFacebookAuthentication(
-               appId: "Titkos",
-               appSecret: "Titkos");
+               appId: "3091774584425315",
+               appSecret: "e7df7269e70dd47f2cda746796b5eb27");
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "Titkos",
-                ClientSecret = "Titkos"
+                ClientId = "376638084684-r1nhdgtjeg3sld9mhuq1od23ef9dgtmq.apps.googleusercontent.com",
+                ClientSecret = "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"
             });
         }
     }

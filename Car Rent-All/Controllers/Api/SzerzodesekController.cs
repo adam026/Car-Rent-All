@@ -18,34 +18,19 @@ namespace Car_Rent_All.Controllers.Api
             _context = new ApplicationDbContext();
         }
 
-        //[HttpPost]
-        //public IHttpActionResult CreateNewSzerzodes(SzerzodesDTO szerzodesDTO) 
-        //{
-        //    var ugyfel = _context.Ugyfelek.Single(u => u.Id == szerzodesDTO.UgyfelId);
+        [HttpDelete]
+        public IHttpActionResult DeleteSzerzodes(int id)
+        {
+            var szerzodesInDb = _context.Szerzodesek.SingleOrDefault(sz => sz.Id == id);
 
-        //    if (ugyfel == null)
-        //        return BadRequest("Az ügyfél nem található az adatbázisban!");
+            if (szerzodesInDb == null)
+                return NotFound();
 
-        //    var jarmu = _context.Jarmuvek.Single(j => j.Id == szerzodesDTO.JarmuId)
+            _context.Szerzodesek.Remove(szerzodesInDb);
+            _context.SaveChanges();
 
-        //    foreach (var jarmu in jarmuvek)
-        //    {
-        //        if (jarmu.Elerheto == 0)
-        //            return BadRequest("A jármű nem elérhető!");
-        //        jarmu.Elerheto--;
-
-        //        var szerzodes = new Szerzodes
-        //        {
-        //            Ugyfel = ugyfel,
-        //            Jarmu = jarmu,
-        //            BerlesKezdoIdopont = DateTime.Now
-        //        };
-
-        //        _context.Szerzodesek.Add(szerzodes);
-        //    };
-
-        //    return Ok();
-        //}
+            return Ok();
+        }
 
     }
 }

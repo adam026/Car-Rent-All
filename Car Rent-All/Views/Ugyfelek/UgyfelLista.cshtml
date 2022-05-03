@@ -5,7 +5,7 @@
 
 <h2>Saját adatok szerkesztése</h2>
 
-@using (Html.BeginForm("Save", "Ugyfelek"))
+@using (Html.BeginForm("Mentes", "Ugyfelek"))
 {
     string dateValue = Model.SzuletesiDatum is null
         ? null
@@ -51,6 +51,7 @@
 
     @Html.HiddenFor(m => m.Id)
     @Html.AntiForgeryToken()
+    <br />
     <button type="submit" class="btn btn-primary">Mentés</button>
 
 }

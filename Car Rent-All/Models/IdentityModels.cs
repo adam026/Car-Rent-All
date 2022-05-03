@@ -25,6 +25,7 @@ namespace Car_Rent_All.Models
         public DbSet<Uzemanyag> Uzemanyagok { get; set; }
         public DbSet<Jarmu> Jarmuvek { get; set; }
         public DbSet<Szerzodes> Szerzodesek { get; set; }
+        public DbSet<Archivum> ArchivaltSzerzodesek { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

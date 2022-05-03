@@ -1,114 +1,158 @@
-﻿@model List<Car_Rent_All.Models.Szerzodes>
-@{
-    ViewBag.Title = "Index";
-}
+﻿<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+@model List<Car_Rent_All.Models.Szerzodes>
+
+<h1>Szerződések áttekintő</h1>
 
 <h3>Jóváhagyásra vár: </h3>
 
 @{
     var counter = 0;
-    foreach (var szerzodes in Model)
-    {
-        if (szerzodes.Jovahagy == 0)
-        {
-            <table class="table table-dark table-hover">
-                <thead>
+
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-primary">
+                <th>Ügyfél</th>
+                <th>Jármű</th>
+                <th>Bérlés kezdő időpontja</th>
+                <th>Bérlés záró időpontja</th>
+                <th>Műveletek</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var szerzodes in Model)
+            {
+                if (szerzodes.Jovahagy == 0)
+                {
                     <tr>
-                        <th>Jármű</th>
-                        <th>Bérlés kezdő időpontja</th>
-                        <th>Bérlés záró időpontja</th>
-                        <th>Státusz</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@szerzodes.Jarmu.Nev</td>
+                        <td>@szerzodes.Ugyfel.Nev</td>
+                        <td> @szerzodes.Jarmu.Nev</td>
                         <td>@szerzodes.BerlesKezdoIdopont.ToString("yyyy-MM-dd")</td>
                         <td>@szerzodes.BerlesZaroIdopont.ToString("yyyy-MM-dd")</td>
-                        <td></td>
+                        <td>
+                            <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Szerkesztes", "Ugyfelek", new { id = szerzodes.Ugyfel.Id })'">
+                                <i class="bi-file-earmark-person"></i>
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Szerkesztes", "Jarmuvek", new { id = szerzodes.Jarmu.Id })'">
+                                <i class="bi-bicycle"></i>
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Jovahagy", "Szerzodesek", new { id = szerzodes.Id })'">
+                                <i class="bi-check-square"></i>
+                            </button>
+                            <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Index", "Szerzodesek")'">
+                                <i class="bi-arrow-repeat"></i>
+                            </button>
+                        </td>
                     </tr>
-                </tbody>
-            </table>
-            counter++;
-        }
-    }
+                }
+                counter++;
+            }
+        </tbody>
+    </table>
 
     if (counter == 0)
     {
         <p>Nincsenek jóváhagyásra váró szerződések!</p>
     }
-
-
 }
 
-<h3>Aktuális, bérelt járművek</h3>
+<h3>Folyamatban lévő bérlések</h3>
 
 @{
     var counter1 = 0;
-    foreach (var szerzodes in Model)
-    {
-        if (szerzodes.Jovahagy == 1 && szerzodes.BerlesZaroIdopont > DateTime.Now)
-        {
 
-            <table class="table table-dark table-hover">
-                <thead>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-primary">
+                <th>Ügyfél</th>
+                <th>Jármű</th>
+                <th>Bérlés kezdő időpontja</th>
+                <th>Bérlés záró időpontja</th>
+                <th>Műveletek</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var szerzodes in Model)
+            {
+                
+                if (szerzodes.Jovahagy == 1 && szerzodes.BerlesZaroIdopont > DateTime.Now)
+                {
+                    var szuletesidatum = szerzodes.Ugyfel.SzuletesiDatum.HasValue ? szerzodes.Ugyfel.SzuletesiDatum.Value.ToString("yyyy-MM-dd") : "";
+                        
                     <tr>
-                        <th>Jármű</th>
-                        <th>Bérlés kezdő időpontja</th>
-                        <th>Bérlés záró időpontja</th>
-                        <th>Státusz</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@szerzodes.Jarmu.Nev</td>
+                        <td>
+                            <p>
+                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseUgyfel_@szerzodes.Id" aria-expanded="false" aria-controls="collapseUgyfel_@szerzodes.Id">
+                                    @szerzodes.Ugyfel.Nev
+                                </button>
+                            </p>
+                            <div class="collapse" id="collapseUgyfel_@szerzodes.Id">
+                                <div class="card card-body">
+                                    <b>Ügyfél adatok:</b>
+                                    <ul>
+                                        <li>Név: @szerzodes.Ugyfel.Nev</li>
+                                        <li>Cím: @szerzodes.Ugyfel.Cim</li>
+                                        <li>Születési dátum: @szuletesidatum</li>
+                                        <li>Jogosítvány: @szerzodes.Ugyfel.Jogositvany</li>
+                                        <li>Telefonszám: @szerzodes.Ugyfel.Telefonszam</li>
+                                        <li>E-mail cím: @szerzodes.Ugyfel.Email</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <p>
+                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseJarmu_@szerzodes.Id" aria-expanded="false" aria-controls="collapseJarmu_@szerzodes.Id">
+                                    @szerzodes.Jarmu.Nev
+                                </button>
+                            </p>
+                            <div class="collapse" id="collapseJarmu_@szerzodes.Id">
+                                <div class="card card-body">
+                                    <b>Jármű adatok:</b>
+                                    <ul>
+                                        <li>Név: @szerzodes.Jarmu.Nev</li>
+                                        <li>Rendszám: @szerzodes.Jarmu.Rendszam</li>
+                                        <li>Alvázszám: @szerzodes.Jarmu.Alvazszam</li>
+                                        <li>Váltó: @szerzodes.Jarmu.Valto.Nev</li>
+                                        <li>Üzemanyag: @szerzodes.Jarmu.Uzemanyag.Nev</li>
+                                        <li>Ülések: @szerzodes.Jarmu.Ules</li>
+                                        <li>Ajtók: @szerzodes.Jarmu.Ajtok</li>
+                                        <li>Gyártás éve: @szerzodes.Jarmu.GyartasEve</li>
+                                        <li>Készlet: @szerzodes.Jarmu.Keszlet</li>
+                                        <li>Ebből elérhető: @szerzodes.Jarmu.Elerheto</li>
+                                        <li>Napi ár: @szerzodes.Jarmu.Ar</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
                         <td>@szerzodes.BerlesKezdoIdopont.ToString("yyyy-MM-dd")</td>
                         <td>@szerzodes.BerlesZaroIdopont.ToString("yyyy-MM-dd")</td>
-                        <td>Jóváhagyva, folyamatban</td>
+                        <td>
+                            <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Jovahagy", "Szerzodesek", new { id = szerzodes.Id })'"><i class="bi-arrow-up-square"></i></button>
+                            <button class="btn btn-outline-warning" onclick="location.href='@Url.Action("ArchivumhozAd", "Szerzodesek", new { id = szerzodes.Id })'"><i class="bi-archive"></i></button>
+                        </td>
                     </tr>
-                </tbody>
-            </table>
-            counter1++;
-        }
-    }
+
+                }
+                counter1++;
+
+            }
+        </tbody>
+    </table>
+
+
+
     if (counter1 == 0)
     {
         <p>Nincsenek aktuális szerződések!</p>
     }
 }
 
-<h3>Korábbi bérléseim</h3>
 
-@{
-    var counter2 = 0;
-    foreach (var szerzodes in Model)
-    {
-        if (szerzodes.Jovahagy == 1 && szerzodes.BerlesZaroIdopont < DateTime.Now)
-        {
-            <table class="table table-dark table-hover">
-                <thead>
-                    <tr>
-                        <th>Jármű</th>
-                        <th>Bérlés kezdő időpontja</th>
-                        <th>Bérlés záró időpontja</th>
-                        <th>Státusz</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>@szerzodes.Jarmu.Nev</td>
-                        <td>@szerzodes.BerlesKezdoIdopont.ToString("yyyy-MM-dd")</td>
-                        <td>@szerzodes.BerlesZaroIdopont.ToString("yyyy-MM-dd")</td>
-                        <td>Lejárt</td>
-                    </tr>
-                </tbody>
-            </table>
-            counter2++;
-        }
-    }
-    if (counter2 == 0)
-    {
-        <p>Nincsenek lejárt szerződések!</p>
-    }
-}
+<h3>Archívum</h3>
+
+<button class="btn btn-primary" onclick="location.href='@Url.Action("ArchivaltSzerzodesek", "Szerzodesek")'">Archivált szerződések megtekintése</button>
+
+
+
 

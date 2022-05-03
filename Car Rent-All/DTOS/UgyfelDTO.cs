@@ -12,6 +12,7 @@ namespace Car_Rent_All.DTOS
         public string Nev { get; set; }
         public string Cim { get; set; }
         public DateTime? SzuletesiDatum { get; set; }
+        public string Kiirashoz => SzuletesiDatum == null ? null : SzuletesiDatum.Value.ToString("yyyy-MM-dd");
         public string Jogositvany { get; set; }
         public string Telefonszam { get; set; }
         public string Email { get; set; }

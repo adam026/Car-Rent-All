@@ -30,6 +30,9 @@ namespace Car_Rent_All.Controllers
             {
                 var szerzodesekAdmin = _context.Szerzodesek
                 .Include(j => j.Jarmu)
+                .Include(u => u.Ugyfel)
+                .Include(v => v.Jarmu.Valto)
+                .Include(u => u.Jarmu.Uzemanyag)
                 .ToList();
 
                 return View("IndexAdmin", szerzodesekAdmin);
@@ -43,9 +46,12 @@ namespace Car_Rent_All.Controllers
             return View("IndexUgyfel", szerzodesek);
         }
 
-        public ActionResult New(Jarmu jarmu)
+        public ActionResult UjSzerzodes(Jarmu jarmu)
         {
-            var ugyfel = _context.Ugyfelek.Single(u => u.Email == User.Identity.Name);
+            var ugyfel = _context.Ugyfelek.SingleOrDefault(u => u.Email == User.Identity.Name);
+            if (ugyfel == null) 
+                return RedirectToAction("Index", "Ugyfelek");
+
             var jarmuBerleshez = _context.Jarmuvek
                 .Include(v => v.Valto)
                 .Include(u => u.Uzemanyag)
@@ -59,10 +65,12 @@ namespace Car_Rent_All.Controllers
                 Ugyfel = ugyfel
             };
 
-            return View("New", viewModel);
+            return View("UjSzerzodes", viewModel);
         }
 
-        public ActionResult Save(Szerzodes szerzodes)
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public ActionResult Mentes(Szerzodes szerzodes)
         {
             if (!ModelState.IsValid)
             {
@@ -81,7 +89,7 @@ namespace Car_Rent_All.Controllers
                     BerlesZaroIdopont = szerzodes.BerlesZaroIdopont
                 };
 
-                return View("New", viewModel);
+                return View("UjSzerzodes", viewModel);
             }
 
 
@@ -89,12 +97,62 @@ namespace Car_Rent_All.Controllers
             {
                 _context.Szerzodesek.Add(szerzodes);
             }
-            else
-            {
-                //Kiegészíteni
-            }
+
             _context.SaveChanges();
             return RedirectToAction("Index", "Szerzodesek");
+        }
+
+        public ActionResult Jovahagy(int id)
+        {
+            var szerzodesInDb = _context.Szerzodesek.Single(sz => sz.Id == id);
+            if (szerzodesInDb.Jovahagy == 1)
+                szerzodesInDb.Jovahagy = 0;
+            else
+                szerzodesInDb.Jovahagy = 1;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Szerzodesek");
+        }
+
+        public ActionResult ArchivumhozAd(int id)
+        {
+            var szerzodes = _context.Szerzodesek
+                .Include(u => u.Ugyfel)
+                .Include(j => j.Jarmu)
+                .Single(sz => sz.Id == id);
+
+            var archivum = new Archivum
+            {
+                SzerzodesId = szerzodes.Id,
+                UgyfelNeve = szerzodes.Ugyfel.Nev,
+                UgyfelCime = szerzodes.Ugyfel.Cim,
+                UgyfelEmail = szerzodes.Ugyfel.Email,
+                UgyfelJogositvany = szerzodes.Ugyfel.Jogositvany,
+                UgyfelSzuletesiDatum = szerzodes.Ugyfel.SzuletesiDatum,
+                UgyfelTelefonszam = szerzodes.Ugyfel.Telefonszam,
+                JarmuNev = szerzodes.Jarmu.Nev,
+                JarmuAlvazszam = szerzodes.Jarmu.Alvazszam,
+                JarmuRendszam = szerzodes.Jarmu.Rendszam,
+                JarmuGyartasEve = szerzodes.Jarmu.GyartasEve,
+                BerlesKezdoIdopont = szerzodes.BerlesKezdoIdopont,
+                BerlesZaroIdopont = szerzodes.BerlesZaroIdopont,
+                BefizetettOsszeg = (szerzodes.BerlesZaroIdopont.Day - szerzodes.BerlesZaroIdopont.Day) * szerzodes.Jarmu.Ar,
+                Megjegyzes = null
+            };
+
+            _context.ArchivaltSzerzodesek.Add(archivum);
+            _context.Szerzodesek.Remove(szerzodes);
+
+            _context.SaveChanges();
+
+            return RedirectToAction("ArchivaltSzerzodesek", "Szerzodesek");
+        }
+
+        public ActionResult ArchivaltSzerzodesek()
+        {
+            var archivaltSzerzodesek = _context.ArchivaltSzerzodesek.ToList();
+            return View(archivaltSzerzodesek);
         }
     }
 

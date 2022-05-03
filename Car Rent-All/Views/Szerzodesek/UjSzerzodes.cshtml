@@ -1,0 +1,104 @@
+﻿<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+@model Car_Rent_All.Models.Szerzodes
+
+<h2>Árajánlat áttekintés</h2>
+
+
+@using (Html.BeginForm("Mentes", "Szerzodesek"))
+{
+    string dateValue = Model.Ugyfel.SzuletesiDatum is null
+        ? null
+        : ((DateTime)Model.Ugyfel.SzuletesiDatum).ToString("yyyy-MM-dd");
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h3>Saját adatok:</h3>
+                <table class="table table-default">
+                    <tbody>
+                        <tr>
+                            <td>Név:</td>
+                            <td>@Model.Ugyfel.Nev</td>
+                        </tr>
+                        <tr>
+                            <td>Cím:</td>
+                            <td>@Model.Ugyfel.Cim</td>
+                        </tr>
+                        <tr>
+                            <td>Születési dátum:</td>
+                            <td>@dateValue</td>
+                        </tr>
+                        <tr>
+                            <td>Jogosítvány:</td>
+                            <td>@Model.Ugyfel.Jogositvany</td>
+                        </tr>
+                        <tr>
+                            <td>Telefonszám:</td>
+                            <td>@Model.Ugyfel.Telefonszam</td>
+                        </tr>
+                        <tr>
+                            <td>E-mail cím:</td>
+                            <td>@Model.Ugyfel.Email</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Index", "Ugyfelek")'">
+                    <i class="bi-file-earmark-person"></i> @Html.ActionLink("Szerkesztés", "Index", "Ugyfelek")
+                </button>
+            </div>
+            <div class="col">
+                <h3>Bérlésre vonatkozó adatok:</h3>
+                <div class="form-group">
+                    @Html.LabelFor(sz => sz.BerlesKezdoIdopont)
+                    @Html.TextBoxFor(u => u.BerlesKezdoIdopont, new { @class = "form-control", type = "date", @placeholder = "Valami"})
+                    @Html.ValidationMessageFor(u => u.BerlesKezdoIdopont)
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(sz => sz.BerlesZaroIdopont)
+                    @Html.TextBoxFor(u => u.BerlesZaroIdopont, new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(u => u.BerlesZaroIdopont)
+                </div>
+            </div>
+            <div class="col">
+                <h3>A kiválasztott jármű adatai:</h3>
+                <div class="card">
+                    <h3 class="card-header">@Model.Jarmu.Nev</h3>
+                    <div class="card-body">
+                        <h5 class="card-title">Váltó: @Model.Jarmu.Valto.Nev</h5>
+                        <h6 class="card-subtitle text-muted">Üzemanyag: @Model.Jarmu.Uzemanyag.Nev</h6>
+                    </div>
+                    <img src="~/Content/IMG/@Model.Jarmu.Kep" />
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Férőhelyek száma: @Model.Jarmu.Ules</li>
+                        <li class="list-group-item">Ajtók száma: @Model.Jarmu.Ajtok</li>
+                        <li class="list-group-item">Gyártás éve: @Model.Jarmu.GyartasEve</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="\Jarmuvek\Reszletek\@Model.Jarmu.Id" class="card-link">Részletes adatok</a>
+                        <a href="\Szerzodesek\UjSzerzodes\@Model.Jarmu.Id" class="card-link">Árajánlatot kérek</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.HiddenFor(sz => sz.Id)
+    @Html.HiddenFor(j => j.JarmuId)
+    @Html.HiddenFor(u => u.UgyfelId)
+    @Html.AntiForgeryToken()
+    <br />
+    <button type="submit" class="btn btn-primary">Árajánlatot kérek!</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+
+

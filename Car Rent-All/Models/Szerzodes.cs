@@ -20,9 +20,11 @@ namespace Car_Rent_All.Models
         public int JarmuId { get; set; }
         public Jarmu Jarmu { get; set; }
 
+        [Display(Name = "Bérlés kezdetének időpontja:")]
         [Required(ErrorMessage = "Kérlek add meg a bérlés kezdő időpontját!")]
         public DateTime BerlesKezdoIdopont { get; set; }
 
+        [Display(Name = "Bérlés végének időpontja:")]
         [Required(ErrorMessage = "Kérlek add meg a bérlés záró időpontját!")]
         public DateTime BerlesZaroIdopont { get; set; }
 

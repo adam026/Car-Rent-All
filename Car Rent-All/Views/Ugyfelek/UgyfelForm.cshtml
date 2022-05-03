@@ -1,14 +1,16 @@
 ﻿@model Car_Rent_All.Models.Ugyfel
-@{
-    ViewBag.Title = "New";
-}
 
 @{
     var cimsor = Model.Id == 0 ? "Új ügyfél hozzáadása" : "Szerkesztés";
+    if (!User.IsInRole("CanManage"))
+    {
+        cimsor = "Saját adatok hozzáadása";
+    }
+
 }
 <h2>@cimsor</h2>
 
-@using (Html.BeginForm("Save", "Ugyfelek"))
+@using (Html.BeginForm("Mentes", "Ugyfelek"))
 {
     string dateValue = Model.SzuletesiDatum is null
         ? null
@@ -53,6 +55,7 @@
 
     @Html.HiddenFor(m => m.Id)
     @Html.AntiForgeryToken()
+    <hr />
     <button type = "submit" class="btn btn-primary">Mentés</button>
 
 }

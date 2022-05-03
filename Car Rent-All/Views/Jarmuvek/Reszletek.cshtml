@@ -1,0 +1,29 @@
+﻿@model Car_Rent_All.Models.Jarmu
+
+<h2>@Model.Nev részletes adatai</h2>
+
+
+<dl class="row">
+    <dt class="col-sm-12"><img src="~/Content/IMG/@Model.Kep" /></dt>
+
+    <dt class="col-sm-4">A jármű neve:</dt>
+    <dd class="col-sm-8">@Model.Nev</dd>
+
+    <dt class="col-sm-4">A váltó típusa:</dt>
+    <dd class="col-sm-8">@Model.Valto.Nev</dd>
+
+    <dt class="col-sm-4">Üzemanyag:</dt>
+    <dd class="col-sm-8">@Model.Uzemanyag.Nev</dd>
+
+    <dt class="col-sm-4">Ajtók száma:</dt>
+    <dd class="col-sm-8">@Model.Ajtok</dd>
+
+    <dt class="col-sm-4">Férőhelyek száma:</dt>
+    <dd class="col-sm-8">@Model.Ules</dd>
+
+    <dt class="col-sm-4">Gyártás éve</dt>
+    <dd class="col-sm-8">@Model.GyartasEve</dd>
+</dl>
+
+<a href="\Szerzodesek\UjSzerzodes\@Model.Id" class="btn btn-primary">Árajánlatot kérek</a>    
+

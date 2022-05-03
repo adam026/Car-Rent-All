@@ -29,7 +29,7 @@ namespace Car_Rent_All
                       "~/scripts/bootbox.js"));
 
             bundles.Add(new Bundle("~/Content/css").Include(
-                      "~/Content/bootstrap-slate.css",
+                      "~/Content/bootstrap-flatly.css",
                       "~/Content/datatables/css/datatables.bootstrap.css",
                       "~/Content/site.css"));
         }
