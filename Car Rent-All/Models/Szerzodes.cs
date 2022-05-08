@@ -22,11 +22,16 @@ namespace Car_Rent_All.Models
 
         [Display(Name = "Bérlés kezdetének időpontja:")]
         [Required(ErrorMessage = "Kérlek add meg a bérlés kezdő időpontját!")]
+        [MinKezdo]
         public DateTime BerlesKezdoIdopont { get; set; }
 
         [Display(Name = "Bérlés végének időpontja:")]
         [Required(ErrorMessage = "Kérlek add meg a bérlés záró időpontját!")]
+        [MinZaro]
         public DateTime BerlesZaroIdopont { get; set; }
+
+        public int ArPerNap { get; set; }
+        public int Koltseg => (BerlesZaroIdopont.Date.Day - BerlesKezdoIdopont.Date.Day) * ArPerNap;
 
         public byte Jovahagy { get; set; }
 

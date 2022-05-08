@@ -1,6 +1,9 @@
 ﻿@model Car_Rent_All.Models.Ugyfel
 
 @{
+    ViewBag.Title = "Új ügyfél hozzáadása / szerkesztése";
+}
+@{
     var cimsor = Model.Id == 0 ? "Új ügyfél hozzáadása" : "Szerkesztés";
     if (!User.IsInRole("CanManage"))
     {
@@ -56,7 +59,7 @@
     @Html.HiddenFor(m => m.Id)
     @Html.AntiForgeryToken()
     <hr />
-    <button type = "submit" class="btn btn-primary">Mentés</button>
+    <button type="submit" class="btn btn-primary">Mentés</button>
 
 }
 

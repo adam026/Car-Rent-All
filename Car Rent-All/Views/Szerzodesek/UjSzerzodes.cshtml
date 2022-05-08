@@ -2,6 +2,10 @@
 
 @model Car_Rent_All.Models.Szerzodes
 
+@{
+    ViewBag.Title = "Új szerződés létrehozása";
+}
+
 <h2>Árajánlat áttekintés</h2>
 
 
@@ -52,7 +56,7 @@
                 <h3>Bérlésre vonatkozó adatok:</h3>
                 <div class="form-group">
                     @Html.LabelFor(sz => sz.BerlesKezdoIdopont)
-                    @Html.TextBoxFor(u => u.BerlesKezdoIdopont, new { @class = "form-control", type = "date", @placeholder = "Valami"})
+                    @Html.TextBoxFor(u => u.BerlesKezdoIdopont, new { @class = "form-control", type = "date" })
                     @Html.ValidationMessageFor(u => u.BerlesKezdoIdopont)
                 </div>
 
@@ -75,6 +79,7 @@
                         <li class="list-group-item">Férőhelyek száma: @Model.Jarmu.Ules</li>
                         <li class="list-group-item">Ajtók száma: @Model.Jarmu.Ajtok</li>
                         <li class="list-group-item">Gyártás éve: @Model.Jarmu.GyartasEve</li>
+                        <li class="list-group-item">Már napi @Model.Jarmu.Ar Ft-tól</li>
                     </ul>
                     <div class="card-body">
                         <a href="\Jarmuvek\Reszletek\@Model.Jarmu.Id" class="card-link">Részletes adatok</a>

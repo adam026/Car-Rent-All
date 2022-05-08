@@ -2,6 +2,10 @@
 
 @model List<Car_Rent_All.Models.Szerzodes>
 
+@{
+    ViewBag.Title = "Szerződések áttekintő";
+}
+
 <h1>Szerződések áttekintő</h1>
 
 <h3>Jóváhagyásra vár: </h3>
@@ -9,13 +13,15 @@
 @{
     var counter = 0;
 
-    <table class="table table-hover">
+    <table id="szerzodesek" class="table table-hover">
         <thead>
             <tr class="table-primary">
                 <th>Ügyfél</th>
                 <th>Jármű</th>
                 <th>Bérlés kezdő időpontja</th>
                 <th>Bérlés záró időpontja</th>
+                <th>Fizetendő díj</th>
+                <th>Kaució</th>
                 <th>Műveletek</th>
             </tr>
         </thead>
@@ -24,11 +30,14 @@
             {
                 if (szerzodes.Jovahagy == 0)
                 {
+                    var kaucio = szerzodes.Koltseg * 0.2;
                     <tr>
                         <td>@szerzodes.Ugyfel.Nev</td>
                         <td> @szerzodes.Jarmu.Nev</td>
                         <td>@szerzodes.BerlesKezdoIdopont.ToString("yyyy-MM-dd")</td>
                         <td>@szerzodes.BerlesZaroIdopont.ToString("yyyy-MM-dd")</td>
+                        <th>@szerzodes.Koltseg Ft</th>
+                        <th>@kaucio Ft</th>
                         <td>
                             <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Szerkesztes", "Ugyfelek", new { id = szerzodes.Ugyfel.Id })'">
                                 <i class="bi-file-earmark-person"></i>
@@ -39,8 +48,8 @@
                             <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Jovahagy", "Szerzodesek", new { id = szerzodes.Id })'">
                                 <i class="bi-check-square"></i>
                             </button>
-                            <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Index", "Szerzodesek")'">
-                                <i class="bi-arrow-repeat"></i>
+                            <button class='btn btn-outline-danger js-delete' data-szerzodes-id=@szerzodes.Id>
+                                <i class="bi-trash"></i>
                             </button>
                         </td>
                     </tr>
@@ -68,17 +77,18 @@
                 <th>Jármű</th>
                 <th>Bérlés kezdő időpontja</th>
                 <th>Bérlés záró időpontja</th>
+                <th>Befizetett bérleti díj</th>
                 <th>Műveletek</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var szerzodes in Model)
             {
-                
+
                 if (szerzodes.Jovahagy == 1 && szerzodes.BerlesZaroIdopont > DateTime.Now)
                 {
                     var szuletesidatum = szerzodes.Ugyfel.SzuletesiDatum.HasValue ? szerzodes.Ugyfel.SzuletesiDatum.Value.ToString("yyyy-MM-dd") : "";
-                        
+
                     <tr>
                         <td>
                             <p>
@@ -118,8 +128,6 @@
                                         <li>Ülések: @szerzodes.Jarmu.Ules</li>
                                         <li>Ajtók: @szerzodes.Jarmu.Ajtok</li>
                                         <li>Gyártás éve: @szerzodes.Jarmu.GyartasEve</li>
-                                        <li>Készlet: @szerzodes.Jarmu.Keszlet</li>
-                                        <li>Ebből elérhető: @szerzodes.Jarmu.Elerheto</li>
                                         <li>Napi ár: @szerzodes.Jarmu.Ar</li>
                                     </ul>
                                 </div>
@@ -127,6 +135,7 @@
                         </td>
                         <td>@szerzodes.BerlesKezdoIdopont.ToString("yyyy-MM-dd")</td>
                         <td>@szerzodes.BerlesZaroIdopont.ToString("yyyy-MM-dd")</td>
+                        <td>@szerzodes.Koltseg</td>
                         <td>
                             <button class="btn btn-outline-primary" onclick="location.href='@Url.Action("Jovahagy", "Szerzodesek", new { id = szerzodes.Id })'"><i class="bi-arrow-up-square"></i></button>
                             <button class="btn btn-outline-warning" onclick="location.href='@Url.Action("ArchivumhozAd", "Szerzodesek", new { id = szerzodes.Id })'"><i class="bi-archive"></i></button>
@@ -152,6 +161,27 @@
 <h3>Archívum</h3>
 
 <button class="btn btn-primary" onclick="location.href='@Url.Action("ArchivaltSzerzodesek", "Szerzodesek")'">Archivált szerződések megtekintése</button>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#szerzodesek").on("click", ".js-delete", function () {
+                var btn = $(this);
+                if (confirm("Valóban törölni szeretnéd a kiválasztott igényt?")) {
+                    $.ajax({
+                        url: "/api/szerzodesek/" + btn.attr("data-szerzodes-id"),
+                        method: "DELETE",
+                        success: function () {
+                            btn.parents("tr").remove();
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+}
 
 
 

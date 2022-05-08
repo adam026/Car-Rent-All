@@ -50,12 +50,7 @@ namespace Car_Rent_All.Models
         [Display(Name = "Kép: ")]
         public string Kep { get; set; }
 
-        [Display(Name = "Készlet: ")]
-        [Required(ErrorMessage = "A készlet megadása kötelező!")]
-        [Range(1,20)]
-        public int Keszlet { get; set; }
-
-        public int Elerheto { get; set; }
+        public byte Elerheto { get; set; }
 
         [Display(Name = "Bérlés ára/nap: ")]
         [Required(ErrorMessage = "A napi ár megadása kötelező!")]

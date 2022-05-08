@@ -3,6 +3,10 @@
 @model Car_Rent_All.ViewModels.JarmuValtoUzemanyag
 
 @{
+    ViewBag.Title = "Új jármű hozzáadása / szerkesztés";
+}
+
+@{
     var cimsor = Model.Jarmu.Id == 0 ? "Új jármű hozzáadása" : "Szerkesztés";
 }
 <h2>@cimsor</h2>
@@ -57,12 +61,6 @@
         @Html.LabelFor(j => j.Jarmu.GyartasEve)
         @Html.TextBoxFor(j => j.Jarmu.GyartasEve, new { @class = "form-control" })
         @Html.ValidationMessageFor(j => j.Jarmu.GyartasEve)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(j => j.Jarmu.Keszlet)
-        @Html.TextBoxFor(j => j.Jarmu.Keszlet, new { @class = "form-control" })
-        @Html.ValidationMessageFor(j => j.Jarmu.Keszlet)
     </div>
 
     <div class="form-group">

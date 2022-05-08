@@ -25,7 +25,9 @@ namespace Car_Rent_All.Controllers.Api
 
             if (szerzodesInDb == null)
                 return NotFound();
+            var jarmu = _context.Jarmuvek.Single(j => j.Id == szerzodesInDb.JarmuId);
 
+            jarmu.Elerheto = 1;
             _context.Szerzodesek.Remove(szerzodesInDb);
             _context.SaveChanges();
 

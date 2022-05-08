@@ -1,0 +1,80 @@
+﻿@model Car_Rent_All.Models.Archivum
+@{
+    ViewBag.Title = "Számla";
+    var szamlaszam = "840000" + Model.SzerzodesId.ToString();
+}
+
+<h2>Számla száma: @szamlaszam</h2>
+
+<dl class="row">
+
+    <dt class="col-sm-12">Cégadatok:</dt>
+    <hr />
+    <dt class="col-sm-4">A cég neve:</dt>
+    <dd class="col-sm-8">Car-RentAll</dd>
+
+    <dt class="col-sm-4">Adószám:</dt>
+    <dd class="col-sm-8">1-19-45658</dd>
+
+    <dt class="col-sm-4">Székhely:</dt>
+    <dd class="col-sm-8">1111 Budapest, Barack köz 4.</dd>
+
+    <dt class="col-sm-4">Számlaszám:</dt>
+    <dd class="col-sm-8">10000585-65853698</dd>
+</dl>
+
+<dl class="row">
+
+    <dt class="col-sm-12">Ügyfél adatok:</dt>
+    <hr />
+    <dt class="col-sm-4">Szerződő fél neve:</dt>
+    <dd class="col-sm-8">@Model.UgyfelNeve</dd>
+
+    <dt class="col-sm-4">Szerződő fél címe:</dt>
+    <dd class="col-sm-8">@Model.UgyfelCime</dd>
+
+    <dt class="col-sm-4">Szerződő fél születési dátuma:</dt>
+    <dd class="col-sm-8">@Model.UgyfelSzuletesiDatum</dd>
+
+    <dt class="col-sm-4">Szerződő fél jogosítvány azonosítója:</dt>
+    <dd class="col-sm-8">@Model.UgyfelJogositvany</dd>
+
+    <dt class="col-sm-4">Elérhetőségek:</dt>
+    <dd class="col-sm-8">E-mail cím: @Model.UgyfelEmail, Telefonszám: @Model.UgyfelTelefonszam</dd>
+</dl>
+
+<dl class="row">
+    <dt class="col-sm-12">Jármű adatok:</dt>
+    <hr />
+
+    <dt class="col-sm-4">Bérelt jármű megnevezése:</dt>
+    <dd class="col-sm-8">@Model.JarmuNev</dd>
+
+    <dt class="col-sm-4">Bérelt jármű rendszáma:</dt>
+    <dd class="col-sm-8">@Model.JarmuRendszam</dd>
+
+    <dt class="col-sm-4">Bérelt jármű alvázszáma:</dt>
+    <dd class="col-sm-8">@Model.JarmuAlvazszam</dd>
+</dl>
+
+<dl class="row">
+
+    <dt class="col-sm-12">Számlarészletező</dt>
+    <hr />
+
+    <dt class="col-sm-4">Számla száma:</dt>
+    <dd class="col-sm-8">@szamlaszam</dd>
+
+    <dt class="col-sm-4">Bérlés kezdő időpontja:</dt>
+    <dd class="col-sm-8">@Model.BerlesKezdoIdopont</dd>
+
+    <dt class="col-sm-4">Bérlés záró időpontja:</dt>
+    <dd class="col-sm-8">@Model.BerlesZaroIdopont</dd>
+
+    <dt class="col-sm-4">Befizetett összeg:</dt>
+    <dd class="col-sm-8">Bruttó: @Model.BefizetettOsszeg Ft</dd>
+</dl>
+
+<button class="btn btn-primary">Nyomtatás</button>
+
+

@@ -1,5 +1,9 @@
 ﻿@model IEnumerable<Car_Rent_All.Models.Jarmu>
 
+@{
+    ViewBag.Title = "Bérelhető járművek";
+}
+
 <h2>Bérelhető Járművek</h2>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -19,6 +23,7 @@
                     <li class="list-group-item">Férőhelyek száma: @jarmu.Ules</li>
                     <li class="list-group-item">Ajtók száma: @jarmu.Ajtok</li>
                     <li class="list-group-item">Gyártás éve: @jarmu.GyartasEve</li>
+                    <li class="list-group-item">Már napi @jarmu.Ar Ft-tól</li>
                 </ul>
                 <div class="card-body">
                     <a href="\Jarmuvek\Reszletek\@jarmu.Id" class="card-link">Részletes adatok</a>

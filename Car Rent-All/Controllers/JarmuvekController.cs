@@ -34,26 +34,16 @@ namespace Car_Rent_All.Controllers
                 .Include(u => u.Uzemanyag)
                 .ToList();
 
+            var elerheto = _context.Jarmuvek
+                .Include(v => v.Valto)
+                .Include(u => u.Uzemanyag)
+                .Where(e => e.Elerheto == 1)
+                .ToList();
+
             if (User.IsInRole("CanManage"))
                 return View("AdminLista");
             else
-                
-                return View("BerelhetoJarmuvek", jarmuvek);
-        }
-
-        [Authorize(Roles = RoleName.CanManage)]
-        public ActionResult JarmuForm()
-        {
-            var jarmu = new Jarmu { Id = 0 };
-
-            var viewModel = new JarmuValtoUzemanyag
-            {
-                Jarmu = jarmu,
-                Valto = _context.Valtok.ToList(),
-                Uzemanyag = _context.Uzemanyagok.ToList()
-            };
-
-            return View(viewModel);
+                return View("BerelhetoJarmuvek", elerheto);
         }
 
         [Authorize(Roles = RoleName.CanManage)]
@@ -61,7 +51,6 @@ namespace Car_Rent_All.Controllers
         [HttpPost]
         public ActionResult Mentes(Jarmu jarmu)
         {
-            jarmu.Elerheto = jarmu.Keszlet;
             if (!ModelState.IsValid)
             {
                 var viewModel = new JarmuValtoUzemanyag
@@ -77,6 +66,7 @@ namespace Car_Rent_All.Controllers
 
             if (jarmu.Id == 0)
             {
+                jarmu.Elerheto = 1;
                 _context.Jarmuvek.Add(jarmu);
             }
             else
@@ -91,9 +81,8 @@ namespace Car_Rent_All.Controllers
                 jarmuInDb.Ajtok = jarmu.Ajtok;
                 jarmuInDb.Ar = jarmu.Ar;
                 jarmuInDb.GyartasEve = jarmu.GyartasEve;
-                jarmuInDb.Keszlet = jarmu.Keszlet;
-                jarmuInDb.Elerheto = jarmu.Elerheto;
                 jarmuInDb.Kep = jarmu.Kep;
+                jarmuInDb.Elerheto = jarmu.Elerheto;
             }
 
             _context.SaveChanges();

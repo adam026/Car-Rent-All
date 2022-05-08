@@ -2,6 +2,10 @@
 
 @model List<Car_Rent_All.Models.Szerzodes>
 
+@{
+    ViewBag.Title = "Saját szerződéseim";
+}
+
 <h3>Jóváhagyásra vár: </h3>
 
 @{
@@ -13,6 +17,8 @@
                 <th>Jármű</th>
                 <th>Bérlés kezdő időpontja</th>
                 <th>Bérlés záró időpontja</th>
+                <th>Fizetendő díj</th>
+                <th>Kaució</th>
                 <th>Státusz</th>
                 <th></th>
             </tr>
@@ -22,10 +28,13 @@
             {
                 if (szerzodes.Jovahagy == 0)
                 {
+                    var kaucio = szerzodes.Koltseg * 0.2;
                     <tr>
                         <td>@szerzodes.Jarmu.Nev</td>
                         <td>@szerzodes.BerlesKezdoIdopont.ToString("yyyy-MM-dd")</td>
                         <td>@szerzodes.BerlesZaroIdopont.ToString("yyyy-MM-dd")</td>
+                        <th>@szerzodes.Koltseg Ft</th>
+                        <th>@kaucio Ft</th>
                         <td>Jóváhagyásra vár</td>
                         <td><button class='btn btn-danger js-delete' data-szerzodes-id="@szerzodes.Id"><i class="bi-trash"></i></button></td>
                     </tr>
@@ -54,6 +63,7 @@
                 <th>Jármű</th>
                 <th>Bérlés kezdő időpontja</th>
                 <th>Bérlés záró időpontja</th>
+                <th>Befizetett bérleti díj</th>
                 <th>Státusz</th>
             </tr>
         </thead>
@@ -66,6 +76,7 @@
                         <td>@szerzodes.Jarmu.Nev</td>
                         <td>@szerzodes.BerlesKezdoIdopont.ToString("yyyy-MM-dd")</td>
                         <td>@szerzodes.BerlesZaroIdopont.ToString("yyyy-MM-dd")</td>
+                        <td>@szerzodes.Koltseg</td>
                         <td>Jóváhagyva, folyamatban</td>
                     </tr>
                 }
@@ -78,45 +89,9 @@
 
 }
 
-<h3>Korábbi bérléseim</h3>
+<button class="btn btn-primary" onclick="location.href='@Url.Action("ArchivUgyfel", "Szerzodesek", new { email = User.Identity.Name})'">Korábbi szerződéseim</button>
 
-@{
 
-    var counter2 = 0;
-
-    <table class="table table-hover">
-        <thead class="table-primary">
-            <tr>
-                <th>Jármű</th>
-                <th>Bérlés kezdő időpontja</th>
-                <th>Bérlés záró időpontja</th>
-                <th>Státusz</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var szerzodes in Model)
-            {
-                if (szerzodes.Jovahagy == 1 && szerzodes.BerlesZaroIdopont < DateTime.Now)
-                {
-                    <tr>
-                        <td>@szerzodes.Jarmu.Nev</td>
-                        <td>@szerzodes.BerlesKezdoIdopont.ToString("yyyy-MM-dd")</td>
-                        <td>@szerzodes.BerlesZaroIdopont.ToString("yyyy-MM-dd")</td>
-                        <td>Lejárt</td>
-                    </tr>
-                }
-                counter2++;
-            }
-
-        </tbody>
-
-    </table>
-
-    if (counter2 == 0)
-    {
-        <p>Nincsenek lejárt szerződések!</p>
-    }
-}
 
 @section scripts
 {

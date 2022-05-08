@@ -73,31 +73,34 @@ namespace Car_Rent_All.Controllers
         public ActionResult Mentes(Szerzodes szerzodes)
         {
             if (!ModelState.IsValid)
-            {
+            { 
                 var jarmuVissza = _context.Jarmuvek
                     .Include(v => v.Valto)
                     .Include(u => u.Uzemanyag)
-                    .Single(j => j.Id == szerzodes.Jarmu.Id);
+                    .Single(j => j.Id == szerzodes.JarmuId);
 
-                var ugyfelVissza = _context.Ugyfelek.Single(u => u.Id == szerzodes.Ugyfel.Id);
+                var ugyfelVissza = _context.Ugyfelek.Single(u => u.Id == szerzodes.UgyfelId);
 
                 var viewModel = new Szerzodes
                 {
                     Jarmu = jarmuVissza,
                     Ugyfel = ugyfelVissza,
-                    BerlesKezdoIdopont = szerzodes.BerlesKezdoIdopont,
+                    BerlesKezdoIdopont = DateTime.Today,
                     BerlesZaroIdopont = szerzodes.BerlesZaroIdopont
                 };
 
                 return View("UjSzerzodes", viewModel);
             }
 
+            var jarmu = _context.Jarmuvek.Single(j => j.Id == szerzodes.JarmuId);
+            szerzodes.ArPerNap = jarmu.Ar;
 
             if (szerzodes.Id != 0)
             {
                 _context.Szerzodesek.Add(szerzodes);
             }
 
+            jarmu.Elerheto = 0;
             _context.SaveChanges();
             return RedirectToAction("Index", "Szerzodesek");
         }
@@ -105,11 +108,17 @@ namespace Car_Rent_All.Controllers
         public ActionResult Jovahagy(int id)
         {
             var szerzodesInDb = _context.Szerzodesek.Single(sz => sz.Id == id);
+            var jarmu = _context.Jarmuvek.Single(j => j.Id == szerzodesInDb.JarmuId);
             if (szerzodesInDb.Jovahagy == 1)
+            {
                 szerzodesInDb.Jovahagy = 0;
+                jarmu.Elerheto = 1;
+            } 
             else
+            {
                 szerzodesInDb.Jovahagy = 1;
-
+                jarmu.Elerheto = 0;
+            }
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Szerzodesek");
@@ -121,6 +130,15 @@ namespace Car_Rent_All.Controllers
                 .Include(u => u.Ugyfel)
                 .Include(j => j.Jarmu)
                 .Single(sz => sz.Id == id);
+
+            var jarmu = _context.Jarmuvek.Single(j => j.Id == szerzodes.Jarmu.Id);
+
+            var zaronap = szerzodes.BerlesZaroIdopont;
+            if (szerzodes.BerlesZaroIdopont.Day > DateTime.Today.Day)
+            {
+                zaronap = DateTime.Today;
+            }
+
 
             var archivum = new Archivum
             {
@@ -136,14 +154,15 @@ namespace Car_Rent_All.Controllers
                 JarmuRendszam = szerzodes.Jarmu.Rendszam,
                 JarmuGyartasEve = szerzodes.Jarmu.GyartasEve,
                 BerlesKezdoIdopont = szerzodes.BerlesKezdoIdopont,
-                BerlesZaroIdopont = szerzodes.BerlesZaroIdopont,
-                BefizetettOsszeg = (szerzodes.BerlesZaroIdopont.Day - szerzodes.BerlesZaroIdopont.Day) * szerzodes.Jarmu.Ar,
+                BerlesZaroIdopont = zaronap,
+                BefizetettOsszeg = (zaronap.Day - szerzodes.BerlesKezdoIdopont.Day) * szerzodes.Jarmu.Ar,
                 Megjegyzes = null
             };
 
             _context.ArchivaltSzerzodesek.Add(archivum);
+            
             _context.Szerzodesek.Remove(szerzodes);
-
+            jarmu.Elerheto = 1;
             _context.SaveChanges();
 
             return RedirectToAction("ArchivaltSzerzodesek", "Szerzodesek");
@@ -153,6 +172,18 @@ namespace Car_Rent_All.Controllers
         {
             var archivaltSzerzodesek = _context.ArchivaltSzerzodesek.ToList();
             return View(archivaltSzerzodesek);
+        }
+
+        public ActionResult ArchivUgyfel(string email)
+        {
+            var ugyfelhezTartozoArchivSzerzodesek = _context.ArchivaltSzerzodesek.Where(u => u.UgyfelEmail == email);
+            return View("ArchivUgyfel", ugyfelhezTartozoArchivSzerzodesek);
+        }
+
+        public ActionResult Szamla(int id) 
+        {
+            var archivSzerzodes = _context.ArchivaltSzerzodesek.Single(sz => sz.SzerzodesId == id);
+            return View(archivSzerzodes);
         }
     }
 

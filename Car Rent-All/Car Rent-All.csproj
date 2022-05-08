@@ -303,12 +303,30 @@
     <Compile Include="Migrations\202205021821221_UpdateArchivum2.designer.cs">
       <DependentUpon>202205021821221_UpdateArchivum2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202205071807590_JarmuvekTablaFrissitese.cs" />
+    <Compile Include="Migrations\202205071807590_JarmuvekTablaFrissitese.designer.cs">
+      <DependentUpon>202205071807590_JarmuvekTablaFrissitese.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205081542114_SzerzodeseFrissitese.cs" />
+    <Compile Include="Migrations\202205081542114_SzerzodeseFrissitese.designer.cs">
+      <DependentUpon>202205081542114_SzerzodeseFrissitese.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205081552032_SzerzodesekFrissitese1.cs" />
+    <Compile Include="Migrations\202205081552032_SzerzodesekFrissitese1.designer.cs">
+      <DependentUpon>202205081552032_SzerzodesekFrissitese1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202205081557139_SzerzodesekFrissitese2.cs" />
+    <Compile Include="Migrations\202205081557139_SzerzodesekFrissitese2.designer.cs">
+      <DependentUpon>202205081557139_SzerzodesekFrissitese2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Archivum.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Jarmu.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MinKezdo.cs" />
+    <Compile Include="Models\MinZaro.cs" />
     <Compile Include="Models\RoleName.cs" />
     <Compile Include="Models\Szerzodes.cs" />
     <Compile Include="Models\Ugyfel.cs" />
@@ -2171,6 +2189,11 @@
     <Content Include="Content\DateTime-1.1.2\js\dataTables.dateTime.min.js" />
     <Content Include="Content\ICON\delete.png" />
     <Content Include="Content\ICON\edit.png" />
+    <Content Include="Content\IMG\logo_kis.png" />
+    <Content Include="Content\IMG\logo_kis1.png" />
+    <Content Include="Content\IMG\logo_kis2.png" />
+    <Content Include="Content\IMG\logo_kis3.png" />
+    <Content Include="Content\IMG\logo_kis4.png" />
     <Content Include="Content\jQuery-3.6.0\jquery-3.6.0.js" />
     <Content Include="Content\jQuery-3.6.0\jquery-3.6.0.min.js" />
     <Content Include="Content\Responsive-2.2.9\css\responsive.bootstrap.css" />
@@ -2458,6 +2481,8 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Szerzodesek\ArchivaltSzerzodesek.cshtml" />
+    <Content Include="Views\Szerzodesek\ArchivUgyfel.cshtml" />
+    <Content Include="Views\Szerzodesek\Szamla.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
@@ -2542,6 +2567,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202205021821221_UpdateArchivum2.resx">
       <DependentUpon>202205021821221_UpdateArchivum2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205071807590_JarmuvekTablaFrissitese.resx">
+      <DependentUpon>202205071807590_JarmuvekTablaFrissitese.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205081542114_SzerzodeseFrissitese.resx">
+      <DependentUpon>202205081542114_SzerzodeseFrissitese.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205081552032_SzerzodesekFrissitese1.resx">
+      <DependentUpon>202205081552032_SzerzodesekFrissitese1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202205081557139_SzerzodesekFrissitese2.resx">
+      <DependentUpon>202205081557139_SzerzodesekFrissitese2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

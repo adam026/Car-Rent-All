@@ -34,9 +34,9 @@ namespace Car_Rent_All.Controllers
                 else
                     return View("UgyfelLista", meghivoUgyfel);
             }
-
         }
 
+        [Authorize]
         [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult Mentes(Ugyfel ugyfel)
@@ -75,6 +75,7 @@ namespace Car_Rent_All.Controllers
                 return View("UgyfelLista", ugyfel);
         }
 
+        [Authorize]
         public ActionResult Szerkesztes(int id)
         {
             var ugyfel = _context.Ugyfelek.SingleOrDefault(u => u.Id == id);

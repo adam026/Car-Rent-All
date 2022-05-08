@@ -3,6 +3,10 @@
 
 @model IEnumerable<Car_Rent_All.Models.Jarmu>
 
+@{
+    ViewBag.Title = "Járművek áttekintő";
+}
+
 <h2>Járművek</h2>
 
 <button type="submit" class="btn btn-primary" onclick="location.href='@Url.Action("UjJarmu", "Jarmuvek")'"><i class="bi-plus-circle"></i> Új jármű hozzáadása</button>
@@ -19,7 +23,6 @@
             <th>Ülések</th>
             <th>Ajtók</th>
             <th>Gyártás éve</th>
-            <th>Készleten</th>
             <th>Alap napi ár</th>
             <th></th>
             <th></th>
@@ -67,9 +70,6 @@
                     },
                     {
                         data: "gyartasEve"
-                    },
-                    {
-                        data: "elerheto"
                     },
                     {
                         data: "ar"

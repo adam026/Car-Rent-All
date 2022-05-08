@@ -2,18 +2,18 @@
 
 @model IEnumerable<Car_Rent_All.Models.Archivum>
 @{
-    ViewBag.Title = "Archivált Szerződesek";
+    ViewBag.Title = "Korábbi szerződéseim";
 }
 
-<h2>Archivált Szerződesek</h2>
+<h2>Korábbi szerződéseim</h2>
 
 <table class="table table-hover">
     <thead>
         <tr class="table-primary">
-            <th>Archívum azonosító</th>
-            <th>Ügyfél adatok</th>
-            <th>Jármű adatok</th>
-            <th>Bérlés adatok</th>
+            <th>Azonosító</th>
+            <th>Szerződéses ügyfél adatok</th>
+            <th>Bérelt jármű adatok</th>
+            <th>Bérléshez kapcsolódó adatok</th>
             <th>Műveletek</th>
         </tr>
     </thead>
@@ -87,4 +87,3 @@
         }
     </tbody>
 </table>
-

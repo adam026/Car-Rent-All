@@ -22,6 +22,7 @@ namespace Car_Rent_All.Controllers.Api
 
         //GET /api/jarmuvek
 
+        [Authorize(Roles = RoleName.CanManage)]
         public IHttpActionResult GetJarmuvek()
         {
             var jarmuDTOk = _context.Jarmuvek

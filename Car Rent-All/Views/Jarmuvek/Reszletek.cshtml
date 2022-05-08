@@ -1,5 +1,9 @@
 ﻿@model Car_Rent_All.Models.Jarmu
 
+@{
+    ViewBag.Title = "Részletek";
+}
+
 <h2>@Model.Nev részletes adatai</h2>
 
 
@@ -25,5 +29,5 @@
     <dd class="col-sm-8">@Model.GyartasEve</dd>
 </dl>
 
-<a href="\Szerzodesek\UjSzerzodes\@Model.Id" class="btn btn-primary">Árajánlatot kérek</a>    
+<a href="\Szerzodesek\UjSzerzodes\@Model.Id" class="btn btn-primary">Árajánlatot kérek</a>
 
